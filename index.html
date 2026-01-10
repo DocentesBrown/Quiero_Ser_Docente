@@ -9,28 +9,80 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
+        /* --- DEFINICIÓN DE VARIABLES (MODO CLARO POR DEFECTO) --- */
         :root {
-            --db-cream: #f3efdc;
+            /* Paleta de Marca */
             --db-blue: #24496e;
+            --db-cream: #f3efdc;
             --db-violet: #4d3069;
             --db-salmon: #da6863;
-            --db-white: #ffffff;
-            --radius: 24px;
+            
+            /* Variables Dinámicas (Cambian según el modo) */
+            --bg-gradient-start: #f3efdc;
+            --bg-gradient-end: #e8e1c5;
+            --text-main: #24496e;           /* Texto principal azul en claro */
+            --text-secondary: #666666;      /* Texto secundario gris en claro */
+            
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --card-border: transparent;
+            --card-hover-bg: #ffffff;
+            --card-text: #333333;
+            
+            --result-bg: #ffffff;
+            --result-detail-bg: #f8f9fa;
+            
+            --info-box-bg: rgba(255,255,255,0.6);
+            --info-box-border: rgba(255,255,255,0.8);
+            
             --shadow-soft: 0 10px 40px -10px rgba(36, 73, 110, 0.15);
             --shadow-hover: 0 20px 50px -10px rgba(36, 73, 110, 0.25);
+            
+            --radius: 24px;
+        }
+
+        /* --- CONFIGURACIÓN MODO OSCURO (DARK MODE) --- */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                /* Fondo Azul Profundo "Night Blue" */
+                --bg-gradient-start: #1a2634; 
+                --bg-gradient-end: #0f1724;
+                
+                /* Texto pasa a Crema para contraste */
+                --text-main: #f3efdc; 
+                --text-secondary: #b0b0b0;
+                
+                /* Tarjetas: Vidrio Oscuro */
+                --card-bg: rgba(30, 40, 55, 0.7);
+                --card-border: rgba(255, 255, 255, 0.05);
+                --card-hover-bg: rgba(40, 55, 75, 0.9);
+                --card-text: #ffffff;
+                
+                /* Resultados */
+                --result-bg: #1e2d3d;
+                --result-detail-bg: rgba(0, 0, 0, 0.2);
+                
+                /* Caja de Info */
+                --info-box-bg: rgba(0, 0, 0, 0.2);
+                --info-box-border: rgba(255, 255, 255, 0.1);
+                
+                /* Sombras más sutiles en oscuro */
+                --shadow-soft: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+                --shadow-hover: 0 20px 50px -10px rgba(0, 0, 0, 0.7);
+            }
         }
 
         body {
-            background: linear-gradient(135deg, var(--db-cream) 0%, #e8e1c5 100%);
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
             font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 20px;
-            color: var(--db-blue);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             overflow-x: hidden;
+            transition: background 0.5s ease, color 0.5s ease;
         }
 
         /* --- DECORACIÓN DE FONDO --- */
@@ -40,8 +92,9 @@
             z-index: -1;
             opacity: 0.5;
         }
-        .c1 { width: 300px; height: 300px; background: #e0d8c0; top: -50px; left: -50px; }
-        .c2 { width: 400px; height: 400px; background: #eaddca; bottom: -100px; right: -100px; }
+        /* Ajustamos los colores de las esferas para que sirvan en ambos modos */
+        .c1 { width: 300px; height: 300px; background: var(--db-salmon); opacity: 0.08; top: -50px; left: -50px; }
+        .c2 { width: 400px; height: 400px; background: var(--db-blue); opacity: 0.08; bottom: -100px; right: -100px; }
 
         /* --- ENCABEZADO --- */
         header {
@@ -71,12 +124,12 @@
             line-height: 1.1;
             margin: 0 0 10px 0;
             font-weight: 800;
-            color: var(--db-blue);
+            color: var(--text-main);
         }
 
         .subtitle {
             font-size: 1rem;
-            color: #6a6a6a;
+            color: var(--text-secondary);
             font-weight: 400;
         }
 
@@ -85,7 +138,6 @@
             width: 100%;
             max-width: 500px;
             display: none;
-            /* Animación de entrada */
             animation: slideUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
@@ -103,7 +155,7 @@
             font-weight: 700;
             text-align: center;
             margin-bottom: 25px;
-            color: var(--db-blue);
+            color: var(--text-main);
             line-height: 1.3;
         }
 
@@ -115,8 +167,9 @@
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px); /* Efecto vidrio */
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-radius: var(--radius);
             padding: 22px;
             display: flex;
@@ -124,7 +177,7 @@
             cursor: pointer;
             box-shadow: var(--shadow-soft);
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            border: 2px solid transparent;
+            border: 2px solid var(--card-border);
             position: relative;
             overflow: hidden;
         }
@@ -145,7 +198,7 @@
         .card:hover {
             transform: translateY(-5px);
             box-shadow: var(--shadow-hover);
-            background: #fff;
+            background: var(--card-hover-bg);
         }
 
         .card:hover::before {
@@ -158,7 +211,7 @@
 
         .card-icon {
             font-size: 1.4rem;
-            color: var(--db-white);
+            color: white; /* Icono siempre blanco dentro del círculo */
             background: var(--db-blue);
             width: 50px;
             height: 50px;
@@ -179,23 +232,25 @@
             font-size: 1.05rem;
             font-weight: 600;
             flex: 1;
-            color: #333;
+            color: var(--card-text);
         }
 
         .card-arrow {
-            color: #ccc;
+            color: var(--text-secondary);
             font-size: 0.9rem;
+            opacity: 0.5;
         }
 
         /* --- RESULTADOS --- */
         .result-box {
-            background: white;
+            background: var(--result-bg);
             padding: 40px 30px;
             border-radius: 30px;
             text-align: center;
-            box-shadow: 0 20px 60px rgba(77, 48, 105, 0.2);
+            box-shadow: var(--shadow-hover);
             position: relative;
             overflow: hidden;
+            border: 1px solid var(--card-border);
         }
 
         /* Borde superior de color */
@@ -215,12 +270,21 @@
             -webkit-text-fill-color: transparent;
             display: inline-block;
         }
+        
+        /* Ajuste para icono gradiente en modo oscuro (para que brille) */
+        @media (prefers-color-scheme: dark) {
+            .result-icon-lg {
+                 background: -webkit-linear-gradient(45deg, #a4c5e6, #d4aee6);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+        }
 
         .result-title {
             font-size: 1.8rem;
             margin-bottom: 10px;
             font-weight: 800;
-            color: var(--db-blue);
+            color: var(--text-main);
         }
 
         .result-tag {
@@ -235,13 +299,14 @@
         }
 
         .result-detail {
-            background: #f8f9fa;
+            background: var(--result-detail-bg);
             padding: 18px;
             border-radius: 16px;
             margin-top: 15px;
             font-size: 0.95rem;
             text-align: left;
             border-left: 4px solid var(--db-blue);
+            color: var(--card-text);
         }
 
         .result-detail strong {
@@ -277,19 +342,19 @@
             cursor: pointer;
             width: 100%;
             transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 10px 20px rgba(36, 73, 110, 0.3);
+            box-shadow: var(--shadow-soft);
         }
 
         .btn-restart:hover {
             transform: translateY(-2px);
             background: var(--db-violet);
-            box-shadow: 0 15px 30px rgba(77, 48, 105, 0.4);
+            box-shadow: var(--shadow-hover);
         }
 
         .back-btn {
             background: none;
             border: none;
-            color: #999;
+            color: var(--text-secondary);
             margin-top: 20px;
             cursor: pointer;
             font-size: 0.9rem;
@@ -307,13 +372,13 @@
         .percentages-box {
             font-size: 0.9rem; 
             font-weight: 400; 
-            color: #666; 
+            color: var(--card-text); 
             margin-top: 15px; 
-            background: rgba(255,255,255,0.6); 
+            background: var(--info-box-bg); 
             padding: 15px; 
             border-radius: 15px;
             text-align: left;
-            border: 1px solid rgba(255,255,255,0.8);
+            border: 1px solid var(--info-box-border);
         }
         
         .percentages-list {
@@ -329,12 +394,16 @@
         .percentages-list li {
             display: flex;
             justify-content: space-between;
-            border-bottom: 1px dotted #ccc;
+            border-bottom: 1px dotted var(--text-secondary);
             padding-bottom: 2px;
         }
         
         .percentages-list b {
             color: var(--db-blue);
+        }
+        /* Ajuste de color del bold en dark mode */
+        @media (prefers-color-scheme: dark) {
+            .percentages-list b { color: var(--db-salmon); }
         }
 
         /* Footer Social */
@@ -345,17 +414,19 @@
         }
         .social-icon {
             width: 45px; height: 45px;
-            background: white;
+            background: var(--card-bg); /* Adaptable */
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            color: var(--db-blue);
+            color: var(--text-main);
             text-decoration: none;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            box-shadow: var(--shadow-soft);
             transition: all 0.3s;
+            border: 1px solid var(--card-border);
         }
         .social-icon:hover {
             transform: translateY(-3px) rotate(10deg);
             color: var(--db-salmon);
+            background: var(--card-hover-bg);
         }
 
     </style>
@@ -476,7 +547,7 @@
             ¿Tenés el % de finales aprobados?
             
             <div class="percentages-box">
-                <div style="font-weight:600; color:var(--db-blue); margin-bottom:5px;">
+                <div style="font-weight:600; color:var(--text-main); margin-bottom:5px;">
                     <i class="fa-solid fa-circle-info"></i> Requisitos por carrera:
                 </div>
                 <ul class="percentages-list">
