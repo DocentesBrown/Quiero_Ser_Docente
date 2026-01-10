@@ -252,6 +252,17 @@
             font-size: 0.8rem;
             letter-spacing: 1px;
         }
+        
+        /* Links dentro de resultados */
+        .result-link {
+            color: var(--db-salmon);
+            text-decoration: underline;
+            font-weight: 700;
+            transition: color 0.2s;
+        }
+        .result-link:hover {
+            color: var(--db-violet);
+        }
 
         /* Botones */
         .btn-restart {
@@ -322,12 +333,12 @@
 
     <header>
         <span class="badge-community">Comunidad Docentes Brown</span>
-        <h1>Tu Asistente de Ingreso</h1>
+        <h1>Tu Asistente de Ingreso a la Docencia</h1>
         <p class="subtitle">Herramienta exclusiva para nuestros seguidores</p>
     </header>
 
     <div id="step-1" class="step-container active">
-        <div class="question-text">¡Hola! 👋<br>¿Cuál es tu objetivo para dar clases?</div>
+        <div class="question-text">¡Hola! 👋<br>¿Cuándo querés comenzar a dar clases en el estado?</div>
         <div class="options-grid">
             <div class="card" onclick="goToStep('step-2')">
                 <div class="card-icon"><i class="fa-solid fa-rocket"></i></div>
@@ -448,13 +459,13 @@
 
     <div id="res-registrado" class="step-container">
         <div class="result-box">
-            <div class="result-icon-lg"><i class="fa-solid fa-clipboard-check"></i></div>
-            <h2 class="result-title">¡Ya estás en sistema!</h2>
+            <div class="result-icon-lg"><i class="fa-solid fa-medal"></i></div>
+            <h2 class="result-title">¡Felicitaciones!</h2>
             <span class="result-tag">Situación Actual</span>
             
             <div class="result-detail">
                 <strong>Para Ciclo 2026</strong>
-                Participá de los Actos Públicos Digitales (necesitás hoja de ruta y cuenta ABC).
+                Participá de los Actos Públicos Digitales. Ingresá al <a href="http://servicios.abc.gov.ar/actos.publicos.digitales/" target="_blank" class="result-link">Listado de Ofertas</a> y comenzá a postularte.
             </div>
             <div class="result-detail">
                 <strong>Para Ciclo 2027</strong>
@@ -537,18 +548,15 @@
     </div>
 
     <div class="social-bar">
-        <a href="https://instagram.com/docentesbrown" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
-        <a href="#" class="social-icon"><i class="fa-brands fa-whatsapp"></i></a>
-        <a href="#" class="social-icon"><i class="fa-regular fa-envelope"></i></a>
+        <a href="https://instagram.com/docentesbrown" class="social-icon" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://wa.me/5491153196358?text=Hola%20Docentes%20Brown%2C%20tengo%20una%20consulta%20para%20hacerles%20sobre%20los%20listados%20docentes" class="social-icon" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
     </div>
 
     <script>
         function goToStep(stepId) {
-            // Animación de salida (opcional, pero simple de implementar quitando la clase active)
             const current = document.querySelector('.step-container.active');
             if(current) current.classList.remove('active');
 
-            // Timeout mínimo para dar sensación de carga fluida
             setTimeout(() => {
                 const target = document.getElementById(stepId);
                 if(target) {
@@ -556,11 +564,9 @@
                 }
             }, 50);
             
-            // Scroll suave hacia arriba si la pantalla es pequeña
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Función para lanzar confeti de celebración
         function showConfetti() {
             var duration = 2 * 1000;
             var animationEnd = Date.now() + duration;
@@ -576,7 +582,6 @@
                 }
 
                 var particleCount = 50 * (timeLeft / duration);
-                // Colores de Docentes Brown
                 var colors = ['#24496e', '#da6863', '#4d3069', '#f3efdc'];
 
                 confetti(Object.assign({}, defaults, { 
