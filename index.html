@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asistente Docentes Brown</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --db-cream: #f3efdc;
+            --db-blue: #24496e;
+            --db-violet: #4d3069;
+            --db-salmon: #da6863;
+            --db-white: #ffffff;
+            --radius: 20px;
+            --shadow: 0 10px 30px rgba(36, 73, 110, 0.15);
+        }
+
+        body {
+            background-color: var(--db-cream);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: var(--db-blue);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- ENCABEZADO --- */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+
+        .brand-tag {
+            background-color: var(--db-violet);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 1.6rem;
+            line-height: 1.3;
+            margin: 0 0 10px 0;
+            font-weight: 800;
+        }
+
+        /* --- CONTENEDOR DE PASOS --- */
+        .step-container {
+            width: 100%;
+            max-width: 500px;
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .step-container.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 25px;
+            color: var(--db-blue);
+        }
+
+        /* --- TARJETAS --- */
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .card {
+            background: var(--db-white);
+            border-radius: var(--radius);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(218, 104, 99, 0.3);
+        }
+
+        .card-icon {
+            font-size: 1.5rem;
+            color: var(--db-salmon);
+            width: 45px;
+            text-align: center;
+            margin-right: 15px;
+        }
+
+        .card-text {
+            font-size: 1rem;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        /* --- RESULTADOS --- */
+        .result-box {
+            background-color: var(--db-blue);
+            color: white;
+            padding: 30px 20px;
+            border-radius: var(--radius);
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .result-badge {
+            background-color: var(--db-salmon);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .result-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+
+        .result-detail {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .result-detail strong {
+            color: var(--db-salmon);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .btn-restart {
+            background-color: var(--db-white);
+            color: var(--db-blue);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: bold;
+            margin-top: 25px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: #777;
+            margin-top: 15px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <span class="brand-tag">Docentes Brown</span>
+        <h1>¿Dónde me anoto?</h1>
+    </header>
+
+    <div id="step-1" class="step-container active">
+        <div class="question-text">¿Querés dar clases este año?</div>
+        <div class="options-grid">
+            <div class="card" onclick="goToStep('step-2')">
+                <div class="card-icon"><i class="fa-solid fa-calendar-check"></i></div>
+                <div class="card-text">Sí, también el año que viene</div>
+            </div>
+            <div class="card" onclick="goToStep('step-2')">
+                <div class="card-icon"><i class="fa-solid fa-calendar-day"></i></div>
+                <div class="card-text">Sí, sólo este año</div>
+            </div>
+            <div class="card" onclick="goToStep('step-3')">
+                <div class="card-icon"><i class="fa-solid fa-calendar-xmark"></i></div>
+                <div class="card-text">No, el año que viene</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="step-2" class="step-container">
+        <div class="question-text">¿Te anotaste el año pasado?</div>
+        <div class="options-grid">
+            <div class="card" onclick="goToStep('res-registrado')">
+                <div class="card-icon"><i class="fa-solid fa-check-circle"></i></div>
+                <div class="card-text">Sí</div>
+            </div>
+            <div class="card" onclick="goToStep('step-3')">
+                <div class="card-icon"><i class="fa-solid fa-circle-xmark"></i></div>
+                <div class="card-text">No</div>
+            </div>
+        </div>
+        <button class="back-btn" onclick="goToStep('step-1')">Volver</button>
+    </div>
+
+    <div id="step-3" class="step-container">
+        <div class="question-text">¿Terminaste el profesorado?</div>
+        <div class="options-grid">
+            <div class="card" onclick="goToStep('step-4')">
+                <div class="card-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                <div class="card-text">Sí</div>
+            </div>
+            <div class="card" onclick="goToStep('step-5')">
+                <div class="card-icon"><i class="fa-solid fa-book"></i></div>
+                <div class="card-text">No</div>
+            </div>
+        </div>
+        <button class="back-btn" onclick="goToStep('step-1')">Volver</button>
+    </div>
+
+    <div id="step-4" class="step-container">
+        <div class="question-text">¿Tenés el título en mano?</div>
+        <div class="options-grid">
+            <div class="card" onclick="goToStep('res-oficial')">
+                <div class="card-icon"><i class="fa-solid fa-file-certificate"></i></div>
+                <div class="card-text">Sí, lo tengo</div>
+            </div>
+            <div class="card" onclick="goToStep('res-tramite')">
+                <div class="card-icon"><i class="fa-solid fa-file-contract"></i></div>
+                <div class="card-text">No, está en trámite</div>
+            </div>
+        </div>
+        <button class="back-btn" onclick="goToStep('step-3')">Volver</button>
+    </div>
+
+    <div id="step-5" class="step-container">
+        <div class="question-text">¿Tenés algún otro título?</div>
+        <div class="options-grid">
+            <div class="card" onclick="goToStep('step-6')">
+                <div class="card-icon"><i class="fa-solid fa-briefcase"></i></div>
+                <div class="card-text">Sí (Abogado, Técnico, Lic, etc.)</div>
+            </div>
+            <div class="card" onclick="goToStep('step-7')">
+                <div class="card-icon"><i class="fa-solid fa-user-graduate"></i></div>
+                <div class="card-text">No, estoy estudiando Profesorado</div>
+            </div>
+            <div class="card" onclick="goToStep('res-emergencia')">
+                <div class="card-icon"><i class="fa-solid fa-university"></i></div>
+                <div class="card-text">No, estoy en la Universidad</div>
+            </div>
+        </div>
+        <button class="back-btn" onclick="goToStep('step-3')">Volver</button>
+    </div>
+
+    <div id="step-6" class="step-container">
+        <div class="question-text">¿Tenés hecho el Tramo Pedagógico?</div>
+        <div class="options-grid">
+            <div class="card" onclick="goToStep('res-oficial')">
+                <div class="card-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+                <div class="card-text">Sí</div>
+            </div>
+            <div class="card" onclick="goToStep('res-108b')">
+                <div class="card-icon"><i class="fa-solid fa-xmark"></i></div>
+                <div class="card-text">No</div>
+            </div>
+        </div>
+        <button class="back-btn" onclick="goToStep('step-5')">Volver</button>
+    </div>
+
+    <div id="step-7" class="step-container">
+        <div class="question-text" style="font-size: 1.1rem;">
+            ¿Tenés el % de finales aprobados?<br>
+            <small style="font-weight:400; font-size: 0.9rem; color: #666;">
+                Inicial/Adultos: 75%<br>Primaria/Secu: 50%<br>Ed.Física: 80%
+            </small>
+        </div>
+        <div class="options-grid">
+            <div class="card" onclick="goToStep('res-108b')">
+                <div class="card-icon"><i class="fa-solid fa-percent"></i></div>
+                <div class="card-text">Sí, cumplo el porcentaje</div>
+            </div>
+            <div class="card" onclick="goToStep('res-emergencia')">
+                <div class="card-icon"><i class="fa-solid fa-battery-half"></i></div>
+                <div class="card-text">No llego al porcentaje</div>
+            </div>
+        </div>
+        <button class="back-btn" onclick="goToStep('step-5')">Volver</button>
+    </div>
+
+    <div id="res-registrado" class="step-container">
+        <div class="result-box">
+            <div class="result-badge">SITUACIÓN ACTUAL</div>
+            <h2 class="result-title">Ya estás en sistema</h2>
+            <div class="result-detail">
+                <strong>Para 2025:</strong> Participá de los Actos Públicos Digitales (necesitás hoja de ruta y ABC).
+            </div>
+            <div class="result-detail">
+                <strong>Para 2026:</strong> ¡No olvides inscribirte nuevamente cuando abran las fechas!
+            </div>
+            <button class="btn-restart" onclick="goToStep('step-1')">Volver al inicio</button>
+        </div>
+    </div>
+
+    <div id="res-oficial" class="step-container">
+        <div class="result-box">
+            <div class="result-badge">TÍTULO DOCENTE / TRAMO</div>
+            <h2 class="result-title">Listado Oficial</h2>
+            <div class="result-detail">
+                <strong>Para 2026:</strong> Anotate en el Listado Oficial (ingreso a la docencia).
+            </div>
+            <div class="result-detail">
+                <strong>Para trabajar YA (2025):</strong> Anotate en el <b>108 A In Fine</b>. (1 marzo a 30 nov).
+            </div>
+            <button class="btn-restart" onclick="goToStep('step-1')">Volver al inicio</button>
+        </div>
+    </div>
+
+    <div id="res-tramite" class="step-container">
+        <div class="result-box">
+            <div class="result-badge">TÍTULO EN TRÁMITE</div>
+            <h2 class="result-title">Listado 108 A</h2>
+            <div class="result-detail">
+                <strong>Para 2026:</strong> Anotate en el Listado 108 A.
+            </div>
+            <div class="result-detail">
+                <strong>Para trabajar YA (2025):</strong> Anotate en el <b>108 A In Fine</b> con constancia de título en trámite.
+            </div>
+            <button class="btn-restart" onclick="goToStep('step-1')">Volver al inicio</button>
+        </div>
+    </div>
+
+    <div id="res-108b" class="step-container">
+        <div class="result-box">
+            <div class="result-badge">PROFESIONAL O ESTUDIANTE AVANZADO</div>
+            <h2 class="result-title">Listado 108 B</h2>
+            <div class="result-detail">
+                <strong>Para 2026:</strong> Corresponde Listado 108 B.
+            </div>
+            <div class="result-detail">
+                <strong>Para trabajar YA (2025):</strong> Anotate en el <b>108 B In Fine</b> (1 marzo a 30 nov).
+            </div>
+            <button class="btn-restart" onclick="goToStep('step-1')">Volver al inicio</button>
+        </div>
+    </div>
+
+    <div id="res-emergencia" class="step-container">
+        <div class="result-box">
+            <div class="result-badge">ESTUDIANTE INICIAL</div>
+            <h2 class="result-title">Listado de Emergencia</h2>
+            <div class="result-detail">
+                <strong>Situación:</strong> Solo podés integrar listados de emergencia.
+            </div>
+            <div class="result-detail">
+                Cada distrito organiza su inscripción. ¡Seguinos en Instagram para ver cuándo abren!
+            </div>
+            <button class="btn-restart" onclick="goToStep('step-1')">Volver al inicio</button>
+        </div>
+    </div>
+
+    <script>
+        function goToStep(stepId) {
+            document.querySelectorAll('.step-container').forEach(el => el.classList.remove('active'));
+            const target = document.getElementById(stepId);
+            if(target) {
+                target.classList.add('active');
+            } else {
+                console.error('Paso no encontrado:', stepId);
+            }
+        }
+    </script>
+</body>
+</html>
