@@ -303,6 +303,40 @@
         
         .back-btn:hover { color: var(--db-salmon); }
 
+        /* Lista de Porcentajes */
+        .percentages-box {
+            font-size: 0.9rem; 
+            font-weight: 400; 
+            color: #666; 
+            margin-top: 15px; 
+            background: rgba(255,255,255,0.6); 
+            padding: 15px; 
+            border-radius: 15px;
+            text-align: left;
+            border: 1px solid rgba(255,255,255,0.8);
+        }
+        
+        .percentages-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px 10px;
+            list-style: none;
+            padding: 0;
+            margin: 10px 0 0 0;
+            font-size: 0.85rem;
+        }
+
+        .percentages-list li {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px dotted #ccc;
+            padding-bottom: 2px;
+        }
+        
+        .percentages-list b {
+            color: var(--db-blue);
+        }
+
         /* Footer Social */
         .social-bar {
             margin-top: 40px;
@@ -440,9 +474,26 @@
     <div id="step-7" class="step-container">
         <div class="question-text">
             ¿Tenés el % de finales aprobados?
-            <div style="font-size: 0.9rem; font-weight: 400; color: #666; margin-top: 10px; background: rgba(255,255,255,0.5); padding: 10px; border-radius: 10px;">
-                <i class="fa-solid fa-circle-info" style="color: var(--db-blue)"></i> Inicial/Adultos: 75% | Primaria/Secu: 50% | Ed.Física: 80%
+            
+            <div class="percentages-box">
+                <div style="font-weight:600; color:var(--db-blue); margin-bottom:5px;">
+                    <i class="fa-solid fa-circle-info"></i> Requisitos por carrera:
+                </div>
+                <ul class="percentages-list">
+                    <li><span>Inglés</span> <b>1%</b></li>
+                    <li><span>Informática</span> <b>25%</b></li>
+                    <li><span>Psicología</span> <b>40%</b></li>
+                    <li><span>Primaria</span> <b>50%</b></li>
+                    <li><span>Secundaria</span> <b>50%</b></li>
+                    <li><span>Bibliotecario</span> <b>50%</b></li>
+                    <li><span>Adultos</span> <b>50%</b></li>
+                    <li><span>Artística</span> <b>50%</b></li>
+                    <li><span>Especial</span> <b>60%</b></li>
+                    <li><span>Inicial</span> <b>75%</b></li>
+                    <li><span>Ed. Física</span> <b>80%</b></li>
+                </ul>
             </div>
+
         </div>
         <div class="options-grid">
             <div class="card" onclick="showConfetti(); goToStep('res-108b')">
